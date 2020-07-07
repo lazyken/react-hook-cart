@@ -1,25 +1,30 @@
 .food-item {
   width: 300px;
-  height: 80px;
+  height: 90px;
   display: flex;
   flex-direction: row;
+  border: 1px solid #ccc;
+  padding: 5px;
   .food-pic {
     width: 70px;
     height: 54px;
   }
   .food-info {
     width: 230px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     .food-spu-dame {
       font-size: 16px;
       color: #333;
       font-weight: bold;
       margin-bottom: 2px;
       line-height: 23px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .food-spu-desc {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       word-break: break-all;
       font-size: 11px;
       color: #666;
@@ -38,6 +43,28 @@
       color: #fb4e44;
       height: 22px;
       line-height: 22px;
+    }
+  }
+  .count-control {
+    width: 100px;
+    height: 25px;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    .food-count {
+      padding: 0 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .icon-count {
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      font-size: 10px;
+      border-radius: 50%;
+      background-color: #f8c960;
+      text-align: center;
     }
   }
 }

@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
-import App from './pages/app.jsx'
+import Home from './pages/home/index.jsx'
+import './common/style/reset.less'
 
 ReactDOM.render(
   <Router>
-    <App />
+    <Home />
   </Router>,
   document.getElementById('root')
 )
