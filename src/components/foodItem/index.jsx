@@ -1,28 +1,35 @@
 import React, { useState } from 'react'
 import './index.less'
 
-export default function Food(props) {
-  const { foodData, onAddFood, onReduceFood } = props
-  const [count, setCount] = useState(0)
+function areEqual(prevProps, nextProps) {
+  if (Object.is(prevProps.foodData, nextProps.foodData)) {
+    return true
+  } else {
+    return false
+  }
+}
+
+export default React.memo(function Food(props) {
+  const { foodData, onCountChangeRef } = props
+  const [count, setCount] = useState(1)
 
   function handleAddFood() {
     setCount(count + 1)
-    if (typeof onAddFood === 'function') {
-      onAddFood()
-    }
+    onCountChangeRef.current.onAddFoodCount(foodData)
   }
 
   function handleReduceFood() {
-    if (count > 0) {
+    if (count > 1) {
       setCount(count - 1)
-      if (typeof onReduceFood === 'function') {
-        onReduceFood()
-      }
+      onCountChangeRef.current.onReduceFoodCount(foodData)
+    } else {
+      alert('商品数量不能小于1')
     }
   }
 
   return (
     <div className='food-item'>
+      {console.log('render food item')}
       <img className='food-pic' src={foodData.littleImageUrl} alt='' />
       <div className='food-info'>
         <p className='food-spu-dame'>{foodData.spuName}</p>
@@ -43,4 +50,4 @@ export default function Food(props) {
       </div>
     </div>
   )
-}
+}, areEqual)

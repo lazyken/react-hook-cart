@@ -1,0 +1,44 @@
+.cart-control {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  width: 380px;
+  background-color: #3b3b3c;
+  .cart {
+    width: 50px;
+    position: relative;
+    .cart-food-count {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 15px;
+      height: 15px;
+      line-height: 15px;
+      border-radius: 50%;
+      text-align: center;
+      background-color: #fb4e44;
+      font-size: 8px;
+    }
+    .icon-cart {
+      width: 50px;
+      height: 50px;
+      border: none;
+    }
+  }
+  .total-price {
+    flex: 1;
+    min-width: 120px;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 20px;
+  }
+  .order {
+    font-size: 16px;
+    text-align: center;
+    background-color: #f8c74e;
+    padding: 0 30px;
+    height: 50px;
+    line-height: 50px;
+  }
+}

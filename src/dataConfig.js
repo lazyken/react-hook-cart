@@ -39,22 +39,22 @@ var foodList = [
     currentPrice: 14,
     sale: 100,
   },
-  {
-    spuId: 6,
-    spuName: '就爱吃鸡双人餐',
-    spuDesc: '麦辣鸡腿堡2个＋麦乐鸡5块＋中可乐2杯 2*494ml',
-    littleImageUrl: 'http://p1.meituan.net/xianfu/e23de45657c51d2fa3e7f8cf440b0a9c325862.jpg',
-    currentPrice: 42,
-    sale: 90,
-  },
-  {
-    spuId: 7,
-    spuName: '巨无霸薯条四件套',
-    spuDesc: '巨无霸1份＋麦辣鸡翅2块＋中薯条1份＋中可乐494ml',
-    littleImageUrl: 'http://p0.meituan.net/xianfu/100d9326a0bb2795e35495fad7551e0c271330.jpg',
-    currentPrice: 39,
-    sale: 100,
-  },
+  // {
+  //   spuId: 6,
+  //   spuName: '就爱吃鸡双人餐',
+  //   spuDesc: '麦辣鸡腿堡2个＋麦乐鸡5块＋中可乐2杯 2*494ml',
+  //   littleImageUrl: 'http://p1.meituan.net/xianfu/e23de45657c51d2fa3e7f8cf440b0a9c325862.jpg',
+  //   currentPrice: 42,
+  //   sale: 90,
+  // },
+  // {
+  //   spuId: 7,
+  //   spuName: '巨无霸薯条四件套',
+  //   spuDesc: '巨无霸1份＋麦辣鸡翅2块＋中薯条1份＋中可乐494ml',
+  //   littleImageUrl: 'http://p0.meituan.net/xianfu/100d9326a0bb2795e35495fad7551e0c271330.jpg',
+  //   currentPrice: 39,
+  //   sale: 100,
+  // },
 ]
 
 export default foodList
