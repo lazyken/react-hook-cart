@@ -1,29 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
+import useCountChanger from '../../Hooks/useCountChanger.js'
 import './index.less'
 
 function areEqual(prevProps, nextProps) {
-  if (Object.is(prevProps.foodData, nextProps.foodData)) {
-    return true
-  } else {
-    return false
-  }
+  return JSON.stringify(prevProps.food) === JSON.stringify(nextProps.food)
 }
 
 export default React.memo(function Food(props) {
-  const { foodData, onCountChangeRef } = props
-  const [count, setCount] = useState(1)
+  const { foodData, foodStatusDispatch } = props
+
+  if (!foodData) {
+    throw new Error('check failed prop:foodData.')
+  }
+  const { count, countDispatch } = useCountChanger()
 
   function handleAddFood() {
-    setCount(count + 1)
-    onCountChangeRef.current.onAddFoodCount(foodData)
+    countDispatch({ type: 'add' })
+    foodStatusDispatch({ type: 'add', payload: { food: foodData } })
   }
 
   function handleReduceFood() {
-    if (count > 1) {
-      setCount(count - 1)
-      onCountChangeRef.current.onReduceFoodCount(foodData)
+    if (count < 1) {
+      alert('商品数量不能小于0')
     } else {
-      alert('商品数量不能小于1')
+      countDispatch({ type: 'reduce' })
+      foodStatusDispatch({ type: 'reduce', payload: { food: foodData } })
     }
   }
 
@@ -38,12 +39,12 @@ export default React.memo(function Food(props) {
         <p className='foood-current-price'>¥ {foodData.currentPrice}</p>
       </div>
       <div className='count-control'>
-        {count > 0 && (
+        {count >= 0 && (
           <span className='icon-count' onClick={handleReduceFood}>
             -
           </span>
         )}
-        {count > 0 && <span className='food-count'>{count}</span>}
+        {count >= 0 && <span className='food-count'>{count}</span>}
         <span className='icon-count' onClick={handleAddFood}>
           +
         </span>

@@ -5,18 +5,23 @@ const cartLight = 'https://s3plus.meituan.net/v1/mss_e2821d7f0cfe4ac1bf9202ecf95
 const cartDark = 'https://s3plus.meituan.net/v1/mss_e2821d7f0cfe4ac1bf9202ecf9590e67/cdn-prod/file:9096d347/c6896f9806bdcb2399cb680fb5dec8c0.png'
 
 function areEqual(prevProps, nextProps) {
-  return JSON.stringify(prevProps.selectedFoodList) === JSON.stringify(nextProps.selectedFoodList)
+  return JSON.stringify(prevProps.foodMap) === JSON.stringify(nextProps.foodMap)
 }
 
 export default React.memo(function CartControl(props) {
-  const { selectedFoodList = [] } = props
-  const totalPrice = selectedFoodList.reduce((prevSum, next) => {
-    return parseFloat((prevSum + next.currentPrice).toFixed(10))
+  const { foodMap = {} } = props
+
+  const foodIds = Object.keys(foodMap)
+  let foodNums = 0
+  const totalPrice = foodIds.reduce((prevSum, next) => {
+    const nextFood = foodMap[next]
+    foodNums += nextFood.count
+    return parseFloat((prevSum + nextFood.currentPrice * nextFood.count).toFixed(10))
   }, 0)
   return (
     <div className='cart-control'>
       <div className='cart'>
-        {selectedFoodList.length > 0 ? <span className='cart-food-count'>{selectedFoodList.length}</span> : null}
+        {foodNums > 0 ? <span className='cart-food-count'>{foodNums}</span> : null}
         <img className='icon-cart' src={totalPrice > 0 ? cartLight : cartDark} alt='' />
       </div>
       <span className='total-price'>¥{totalPrice}</span>

@@ -1,56 +1,103 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import FoodItem from '../../components/foodItem'
 import CartControl from '../../components/cart'
-import foodData from '../../dataConfig.js'
+import foodDataConfig from '../../dataConfig.js'
+import useFoodStatusMap from '../../Hooks/useFoodStatusMap.js'
+import useChecked from '../../Hooks/useChecked.js'
+
 import './index.less'
-// 自定义的类似useRef逻辑，但是当Home组件复用时，_onCountChangeRef还是唯一的会存在bug
-// const _onCountChangeRef = {}
+
+function FoodArrayToMap(list) {
+  const foodMapData = {}
+  list.forEach((food) => {
+    foodMapData[food.spuId] = Object.assign(food, { count: 0, checked: false })
+  })
+  return foodMapData
+}
 
 export default function Home() {
-  const [selectedFoodList, setSelecteFoodList] = useState([])
+  const { foodMap, foodStatusDispatch } = useFoodStatusMap(FoodArrayToMap(foodDataConfig))
+  const { checkedMap, checkedDispatch } = useChecked(FoodArrayToMap(foodDataConfig))
 
-  const onCountChangeRef = useRef({
-    onAddFoodCount: handleAddFood,
-    onReduceFoodCount: handleReduceFood,
-  })
-
-  function handleAddFood(food) {
-    const newFoodList = [...selectedFoodList]
-    newFoodList.push(food)
-    setSelecteFoodList(newFoodList)
-  }
-
-  function handleReduceFood(food) {
-    let fillterFoods = [...selectedFoodList]
-    const firstTargetIndex = fillterFoods.findIndex((item) => {
-      return item.spuId === food.spuId
+  function handleDelete() {
+    const foodIds = Object.keys(foodMap)
+    const filterFoods = []
+    const deleteIds = []
+    foodIds.forEach((id) => {
+      if (foodMap[id].checked) {
+        deleteIds.push(id)
+      } else {
+        filterFoods.push(foodMap[id])
+      }
     })
-    if (firstTargetIndex > -1) {
-      fillterFoods.splice(firstTargetIndex, 1)
-      setSelecteFoodList(fillterFoods)
-    }
+    foodStatusDispatch({ type: 'deleteFoods', payload: { deleteIds } })
+    checkedDispatch({ type: 'delete', payload: { deleteIds } })
+  }
+  function handleReset() {
+    foodStatusDispatch({ type: 'setFoodMap', payload: { setFoodMapData: FoodArrayToMap(foodDataConfig) } })
   }
 
-  // useEffect(() => {
-  //   _onCountChangeRef.onAddFoodCount = handleAddFood
-  //   _onCountChangeRef.onReduceFoodCount = handleReduceFood
-  // })
+  function handleChecked(food, checked) {
+    foodStatusDispatch({ type: 'check', payload: { food, checked } })
+    checkedDispatch({ type: 'check', payload: { id: food.spuId, checked } })
+  }
 
-  useEffect(() => {
-    onCountChangeRef.current = {
-      onAddFoodCount: handleAddFood,
-      onReduceFoodCount: handleReduceFood,
+  function handleCheckedAll(checkAll) {
+    foodStatusDispatch({ type: 'checkAll', payload: { checkAll } })
+    checkedDispatch({ type: 'checkAll', payload: { checkAll } })
+  }
+
+  let isCheckAll = Object.keys(checkedMap).length > 0
+  for (let i in checkedMap) {
+    if (!checkedMap[i].checked) {
+      isCheckAll = false
     }
-  })
+  }
 
   return (
     <div className='home-page'>
+      {Object.keys(foodMap).length !== foodDataConfig.length && (
+        <span className='init-cart' onClick={handleReset}>
+          重置购物车
+        </span>
+      )}
       <div className='food-list'>
-        {foodData.map((food, index) => {
-          return <FoodItem className='food-item' foodData={food} key={index} onCountChangeRef={onCountChangeRef}></FoodItem>
+        {Object.keys(foodMap).map((foodId, index) => {
+          const food = foodMap[foodId]
+          return (
+            <div className='foodItem-with-check' key={foodId}>
+              <div className='food-check-input-wrap'>
+                <input
+                  type='checkbox'
+                  className='food-check-input'
+                  checked={!!(checkedMap[food.spuId] && checkedMap[food.spuId].checked)}
+                  onChange={(e) => {
+                    handleChecked(food, e.target.checked)
+                  }}
+                />
+              </div>
+              <FoodItem className='food-item' foodData={food} foodStatusDispatch={foodStatusDispatch}></FoodItem>
+            </div>
+          )
         })}
+        <div className='check-all'>
+          <input
+            type='checkbox'
+            className='check-all-input'
+            id='check-all'
+            checked={isCheckAll}
+            onChange={(e) => {
+              handleCheckedAll(e.target.checked)
+            }}
+          />
+          <label htmlFor='check-all'>全选</label>
+          <span className='delete' onClick={handleDelete}>
+            删除
+          </span>
+        </div>
       </div>
-      <CartControl selectedFoodList={selectedFoodList}></CartControl>
+
+      <CartControl foodMap={foodMap}></CartControl>
     </div>
   )
 }
