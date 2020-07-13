@@ -2,17 +2,27 @@ import React from 'react'
 import FoodItem from '../../components/foodItem'
 import CartControl from '../../components/cart'
 import foodDataConfig from '../../dataConfig.js'
-import useFoodStatusMap from '../../Hooks/useFoodStatusMap.js'
-import useChecked from '../../Hooks/useChecked.js'
+import useFoodStatusMap from '../../Hooks/useFoodStatusMap'
+import useChecked from '../../Hooks/useChecked'
+
+import { Food, FoodMap, CheckedMap } from '../../types'
 
 import './index.less'
 
-function FoodArrayToMap(list) {
-  const foodMapData = {}
+function FoodArrayToMap(list: Food[]): FoodMap {
+  const foodMapData: FoodMap = {}
   list.forEach((food) => {
     foodMapData[food.spuId] = Object.assign({ count: 0, checked: false }, food)
   })
   return foodMapData
+}
+
+function computedCheckedMap(initCheckedMap: Food[]): CheckedMap {
+  let checkedMap: CheckedMap = {}
+  initCheckedMap.forEach((food) => {
+    checkedMap[food.spuId] = { checked: false }
+  })
+  return checkedMap
 }
 
 export default function Home() {
@@ -22,7 +32,7 @@ export default function Home() {
   function handleDelete() {
     const foodIds = Object.keys(foodMap)
     const filterFoods = []
-    const deleteIds = []
+    const deleteIds: string[] = []
     foodIds.forEach((id) => {
       if (foodMap[id].checked) {
         deleteIds.push(id)
@@ -37,15 +47,15 @@ export default function Home() {
   }
   function handleReset() {
     foodStatusDispatch({ type: 'setFoodMap', payload: { setFoodMapData: FoodArrayToMap(foodDataConfig) } })
-    checkedDispatch({ type: 'setCheckedMap', payload: { setCheckedMapData: FoodArrayToMap(foodDataConfig) } })
+    checkedDispatch({ type: 'setCheckedMap', payload: { setCheckedMapData: computedCheckedMap(foodDataConfig) } })
   }
 
-  function handleChecked(food, checked) {
+  function handleChecked(food: Food, checked: boolean) {
     foodStatusDispatch({ type: 'check', payload: { food, checked } })
     checkedDispatch({ type: 'check', payload: { id: food.spuId, checked } })
   }
 
-  function handleCheckedAll(checkAll) {
+  function handleCheckedAll(checkAll: boolean) {
     foodStatusDispatch({ type: 'checkAll', payload: { checkAll } })
     checkedDispatch({ type: 'checkAll', payload: { checkAll } })
   }
