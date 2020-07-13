@@ -15,8 +15,12 @@ export default React.memo(function CartControl(props) {
   let foodNums = 0
   const totalPrice = foodIds.reduce((prevSum, next) => {
     const nextFood = foodMap[next]
-    foodNums += nextFood.count
-    return parseFloat((prevSum + nextFood.currentPrice * nextFood.count).toFixed(10))
+    if (nextFood.checked) {
+      foodNums += nextFood.count
+      return parseFloat((prevSum + nextFood.currentPrice * nextFood.count).toFixed(10))
+    } else {
+      return parseFloat((prevSum + 0).toFixed(10))
+    }
   }, 0)
   return (
     <div className='cart-control'>

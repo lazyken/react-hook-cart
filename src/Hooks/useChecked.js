@@ -13,7 +13,7 @@ export default function useCountChanger(initCheckedMap) {
   function checkedReducer(state, action) {
     const {
       type,
-      payload: { id, checked, checkAll, deleteIds },
+      payload: { id, checked, checkAll, deleteIds, setCheckedMapData },
     } = action
     const newState = JSON.parse(JSON.stringify(state))
     switch (type) {
@@ -35,6 +35,8 @@ export default function useCountChanger(initCheckedMap) {
           })
         }
         return newState
+      case 'setCheckedMap':
+        return setCheckedMapData
       default:
         throw new Error('Unexpected type:' + type)
     }

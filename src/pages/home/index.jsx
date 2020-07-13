@@ -10,7 +10,7 @@ import './index.less'
 function FoodArrayToMap(list) {
   const foodMapData = {}
   list.forEach((food) => {
-    foodMapData[food.spuId] = Object.assign(food, { count: 0, checked: false })
+    foodMapData[food.spuId] = Object.assign({ count: 0, checked: false }, food)
   })
   return foodMapData
 }
@@ -30,11 +30,14 @@ export default function Home() {
         filterFoods.push(foodMap[id])
       }
     })
-    foodStatusDispatch({ type: 'deleteFoods', payload: { deleteIds } })
-    checkedDispatch({ type: 'delete', payload: { deleteIds } })
+    if (deleteIds.length) {
+      foodStatusDispatch({ type: 'deleteFoods', payload: { deleteIds } })
+      checkedDispatch({ type: 'delete', payload: { deleteIds } })
+    }
   }
   function handleReset() {
     foodStatusDispatch({ type: 'setFoodMap', payload: { setFoodMapData: FoodArrayToMap(foodDataConfig) } })
+    checkedDispatch({ type: 'setCheckedMap', payload: { setCheckedMapData: FoodArrayToMap(foodDataConfig) } })
   }
 
   function handleChecked(food, checked) {
