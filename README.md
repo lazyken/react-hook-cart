@@ -10,4 +10,6 @@
 
 注意：
 如果 Reducer Hook 的返回值与当前 state 相同，React 将跳过子组件的渲染及副作用的执行。（React 使用 Object.is 比较算法 来比较 state。）
-针对这一问题，本 Demo 在 React.memo 的第二个 areEqual 参数和 useReducer 的 reducer 中均使用了 JSON.parse(JSON.stringify(state))的方式来比较前后值的变化
+针对这一问题，本 Demo 在 React.memo 的第二个 areEqual 参数使用了 JSON.parse(JSON.stringify(state))的方式来比较前后值的变化
+在 useReducer 的 reducer 中通过对象扩展符改变了 state 的引用使组件更新
+后续会再继续优化
