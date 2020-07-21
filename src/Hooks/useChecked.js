@@ -7,7 +7,7 @@ function init(initCheckedMap) {
   return initCheckedMap
 }
 
-export default function useCountChanger(initCheckedMap) {
+export default function useChecked(initCheckedMap) {
   const [checkedMap, checkedDispatch] = useReducer(checkedReducer, initCheckedMap, init)
 
   function checkedReducer(state, action) {

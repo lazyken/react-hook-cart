@@ -1,5 +1,4 @@
 import React from 'react'
-// import useCountChanger from '../../Hooks/useCountChanger.js'
 import './index.less'
 
 function areEqual(prevProps, nextProps) {
